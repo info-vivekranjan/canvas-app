@@ -38,6 +38,9 @@ import Select from "@mui/material/Select";
 import Paper from "@mui/material/Paper";
 import AddIcon from "@mui/icons-material/Add";
 import Slider from "@mui/material/Slider";
+import Crop32Icon from "@mui/icons-material/Crop32";
+import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
+import ChangeHistoryIcon from "@mui/icons-material/ChangeHistory";
 
 const CanvasApp = () => {
   const canvasRef = useRef(null);
@@ -52,6 +55,21 @@ const CanvasApp = () => {
   const handleCollapseShape = () => {
     setOpen(!open);
   };
+
+  //=============================================================================================<<Theme for material>>=======================================================
+
+  const themeColor = createTheme({
+    palette: {
+      primary: {
+        main: "#ec3266",
+      },
+      secondary: {
+        main: "#ffffff",
+      },
+    },
+  });
+
+  //=============================================================================================<<Image>>=======================================================
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -71,7 +89,8 @@ const CanvasApp = () => {
     event.target.value = "";
   };
 
-  // Function to add text to the canvas
+  //=============================================================================================<<Text>>=======================================================
+
   const addText = () => {
     if (canvas) {
       const text = new fabric.IText("Tap and Type", {
@@ -168,6 +187,8 @@ const CanvasApp = () => {
     }
   };
 
+  //=============================================================================================<<Filled Shape>>=======================================================
+
   const addRectangle = () => {
     const rect = new fabric.Rect({
       left: 100,
@@ -176,7 +197,7 @@ const CanvasApp = () => {
       height: 100,
       fill: selectedShape ? selectedShape.color : "#949494",
     });
-    addDeleteControl(rect); // Add delete control to the rectangle
+    addDeleteControl(rect);
     addCloneControl(rect);
 
     // Associate a color property with the rectangle object
@@ -191,7 +212,7 @@ const CanvasApp = () => {
       radius: 50,
       fill: selectedShape ? selectedShape.color : "#949494",
     });
-    addDeleteControl(circle); // Add delete control to the circle
+    addDeleteControl(circle);
     addCloneControl(circle);
     // Associate a color property with the rectangle object
     circle.color = selectedShape ? selectedShape.color : "#949494";
@@ -206,7 +227,7 @@ const CanvasApp = () => {
       height: 100,
       fill: selectedShape ? selectedShape.color : "#949494",
     });
-    addDeleteControl(triangle); // Add delete control to the triangle
+    addDeleteControl(triangle);
     addCloneControl(triangle);
 
     // Associate a color property with the rectangle object
@@ -267,6 +288,117 @@ const CanvasApp = () => {
     polyg.color = selectedShape ? selectedShape.color : "#949494";
     canvas.add(polyg);
   };
+
+  //=============================================================================================<<Stroked Shape>>=======================================================
+
+  const addRectangleStroke = () => {
+    const rect = new fabric.Rect({
+      left: 100,
+      top: 100,
+      width: 100,
+      height: 100,
+      stroke: selectedShape ? selectedShape.color : "#949494",
+      strokeWidth: 3,
+      fill: "",
+    });
+    addDeleteControl(rect);
+    addCloneControl(rect);
+
+    // Associate a color property with the rectangle object
+    rect.color = selectedShape ? selectedShape.color : "#949494";
+    canvas.add(rect);
+  };
+
+  const addCircleStroke = () => {
+    const circle = new fabric.Circle({
+      left: 100,
+      top: 100,
+      radius: 50,
+      stroke: selectedShape ? selectedShape.color : "#949494",
+      strokeWidth: 3,
+      fill: "",
+    });
+    addDeleteControl(circle);
+    addCloneControl(circle);
+    // Associate a color property with the rectangle object
+    circle.color = selectedShape ? selectedShape.color : "#949494";
+    canvas.add(circle);
+  };
+
+  const addTriangleStroke = () => {
+    const triangle = new fabric.Triangle({
+      left: 100,
+      top: 100,
+      width: 100,
+      height: 100,
+      stroke: selectedShape ? selectedShape.color : "#949494",
+      strokeWidth: 3,
+      fill: "",
+    });
+    addDeleteControl(triangle);
+    addCloneControl(triangle);
+
+    // Associate a color property with the rectangle object
+    triangle.color = selectedShape ? selectedShape.color : "#949494";
+    canvas.add(triangle);
+  };
+
+  const addHexagonStroke = () => {
+    var trapezoid = [
+      { x: -100, y: -50 },
+      { x: 100, y: -50 },
+      { x: 150, y: 50 },
+      { x: -150, y: 50 },
+    ];
+    var emerald = [
+      { x: 850, y: 75 },
+      { x: 958, y: 137.5 },
+      { x: 958, y: 262.5 },
+      { x: 850, y: 325 },
+      { x: 742, y: 262.5 },
+      { x: 742, y: 137.5 },
+    ];
+    var star4 = [
+      { x: 0, y: 0 },
+      { x: 100, y: 50 },
+      { x: 200, y: 0 },
+      { x: 150, y: 100 },
+      { x: 200, y: 200 },
+      { x: 100, y: 150 },
+      { x: 0, y: 200 },
+      { x: 50, y: 100 },
+      { x: 0, y: 0 },
+    ];
+    var star5 = [
+      { x: 350, y: 75 },
+      { x: 380, y: 160 },
+      { x: 470, y: 160 },
+      { x: 400, y: 215 },
+      { x: 423, y: 301 },
+      { x: 350, y: 250 },
+      { x: 277, y: 301 },
+      { x: 303, y: 215 },
+      { x: 231, y: 161 },
+      { x: 321, y: 161 },
+    ];
+    var shape = new Array(trapezoid, emerald, star4, star5);
+
+    var polyg = new fabric.Polygon(shape[1], {
+      top: 180,
+      left: 200,
+      stroke: selectedShape ? selectedShape.color : "#949494",
+      strokeWidth: 3,
+      fill: "",
+    });
+    addDeleteControl(polyg);
+    addCloneControl(polyg);
+
+    // Associate a color property with the rectangle object
+    polyg.color = selectedShape ? selectedShape.color : "#949494";
+    canvas.add(polyg);
+  };
+  //=============================================================================================<<Delete and Clone>>=======================================================
+
   fabric.Object.prototype.cornerColor = "black";
   fabric.Object.prototype.cornerStyle = "circle";
   fabric.Object.prototype.transparentCorners = true;
@@ -353,6 +485,7 @@ const CanvasApp = () => {
     ctx.drawImage(img, -size / 2, -size / 2, size, size);
     ctx.restore();
   }
+  //=============================================================================================<<Download>>=======================================================
 
   const downloadCanvas = () => {
     const dataURL = canvas.toDataURL({ format: "jpeg" });
@@ -363,22 +496,17 @@ const CanvasApp = () => {
   };
   const handleShapeColorChange = (color) => {
     if (selectedShape) {
-      selectedShape.set("fill", color);
+      if (selectedShape.fill !== "") {
+        selectedShape.set("fill", color);
+      } else if (selectedShape.fill == "") {
+        selectedShape.set("stroke", color);
+      }
       selectedShape.color = color; // Update the color property for the selected shape
       canvas.renderAll();
     }
   };
 
-  const themeColor = createTheme({
-    palette: {
-      primary: {
-        main: "#ec3266",
-      },
-      secondary: {
-        main: "#ffffff",
-      },
-    },
-  });
+  //=============================================================================================<<useEffect>>=======================================================
 
   useEffect(() => {
     let newCanvas = new fabric.Canvas(canvasRef.current);
@@ -499,6 +627,46 @@ const CanvasApp = () => {
                         <HexagonIcon sx={{ color: "white" }} />
                       </ListItemIcon>
                       <ListItemText primary="Hexagon" />
+                    </ListItemButton>
+                    <ListItemButton onClick={addRectangleStroke}>
+                      <ListItemIcon>
+                        <Crop32Icon sx={{ color: "white" }} />
+                      </ListItemIcon>
+                      <ListItemText primary="Rectangle Stroke" />
+                    </ListItemButton>
+                    <ListItemButton onClick={addCircleStroke}>
+                      <ListItemIcon>
+                        <PanoramaFishEyeIcon sx={{ color: "white" }} />
+                      </ListItemIcon>
+                      <ListItemText primary="Circle Stroke" />
+                    </ListItemButton>
+                    <ListItemButton onClick={addTriangleStroke}>
+                      <ListItemIcon>
+                        <ChangeHistoryIcon sx={{ color: "white" }} />
+                      </ListItemIcon>
+                      <ListItemText primary="Triangle Stroke" />
+                    </ListItemButton>
+                    <ListItemButton onClick={addHexagonStroke}>
+                      <ListItemIcon>
+                        <svg
+                          fill="#ffffff"
+                          version="1.1"
+                          id="Capa_1"
+                          width="25px"
+                          height="25px"
+                          viewBox="0 0 485.688 485.688"
+                        >
+                          <g>
+                            <g>
+                              <path
+                                d="M364.269,453.155H121.416L0,242.844L121.416,32.533h242.853l121.419,210.312L364.269,453.155z M131.905,434.997h221.878
+			l110.939-192.152L353.783,50.691H131.905L20.966,242.844L131.905,434.997z"
+                              />
+                            </g>
+                          </g>
+                        </svg>
+                      </ListItemIcon>
+                      <ListItemText primary="Hexagon Stroke" />
                     </ListItemButton>
                   </List>
                 </Collapse>
