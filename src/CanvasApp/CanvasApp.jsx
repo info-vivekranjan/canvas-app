@@ -27,6 +27,17 @@ import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import DownloadIcon from "@mui/icons-material/Download";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
+import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Paper from "@mui/material/Paper";
+import AddIcon from "@mui/icons-material/Add";
+import Slider from "@mui/material/Slider";
 
 const CanvasApp = () => {
   const canvasRef = useRef(null);
@@ -35,7 +46,7 @@ const CanvasApp = () => {
   const [canvasBackgroundColor, setCanvasBackgroundColor] = useState("#ffffff");
   const [textColor, setTextColor] = useState("#949494");
   const [selectedShape, setSelectedShape] = useState(null);
-  const drawerWidth = 220;
+  const drawerWidth = 250;
   const [open, setOpen] = React.useState(false);
 
   const handleCollapseShape = () => {
@@ -537,85 +548,145 @@ const CanvasApp = () => {
               {selectedShape?.type === "i-text" && (
                 <Box>
                   <h4>Text control</h4>
-                  <label>Text Color:</label>
-                  <input
-                    type="color"
-                    value={textColor}
-                    onChange={(e) => handleTextColorChange(e.target.value)}
-                  />
-                  <select
-                    onChange={(e) => handleFontFamilyChange(e.target.value)}
+                  <Box
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      height: "4vh",
+                    }}
                   >
-                    <option value="arial">Arial</option>
-                    <option value="helvetica">Helvetica</option>
-                    <option value="myriad pro">Myriad Pro</option>
-                    <option value="delicious">Delicious</option>
-                    <option value="verdana">Verdana</option>
-                    <option value="georgia">Georgia</option>
-                    <option value="courier">Courier</option>
-                    <option value="comic sans ms">Comic Sans MS</option>
-                    <option value="impact">Impact</option>
-                    <option value="monaco">Monaco</option>
-                    <option value="optima">Optima</option>
-                    <option value="hoefler text">Hoefler Text</option>
-                    <option value="plaster">Plaster</option>
-                    <option value="engagement">Engagement</option>
-                  </select>
+                    <label id="text-color">
+                      <input
+                        id="text-color"
+                        type="color"
+                        value={textColor}
+                        onChange={(e) => handleTextColorChange(e.target.value)}
+                        style={{ display: "none" }}
+                      />
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        size="small"
+                        endIcon={<FormatColorTextIcon />}
+                      >
+                        Text color
+                      </Button>
+                    </label>
+                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                      <InputLabel id="select-font-type">Font Type</InputLabel>
+                      <Select
+                        labelId="select-font-type"
+                        id="font-type"
+                        // value={age}
+                        label="Font Type"
+                        onChange={(e) => handleFontFamilyChange(e.target.value)}
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value="arial">Arial</MenuItem>
+                        <MenuItem value="helvetica">Helvetica</MenuItem>
+                        <MenuItem value="myriad pro">Myriad Pro</MenuItem>
+                        <MenuItem value="delicious">Delicious</MenuItem>
+                        <MenuItem value="verdana">Verdana</MenuItem>
+                        <MenuItem value="georgia">Georgia</MenuItem>
+                        <MenuItem value="courier">Courier</MenuItem>
+                        <MenuItem value="comic sans ms">Comic Sans MS</MenuItem>
+                        <MenuItem value="impact">Impact</MenuItem>
+                        <MenuItem value="monaco">Monaco</MenuItem>
+                        <MenuItem value="optima">Optima</MenuItem>
+                        <MenuItem value="hoefler text">Hoefler Text</MenuItem>
+                        <MenuItem value="plaster">Plaster</MenuItem>
+                        <MenuItem value="engagement">Engagement</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                      <InputLabel id="select-align-text">Align Text</InputLabel>
+                      <Select
+                        labelId="select-align-text"
+                        id="demo-align-text"
+                        // value={age}
+                        label="Align Text"
+                        onChange={(e) => handleTextAlignChange(e.target.value)}
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value="left">Left</MenuItem>
+                        <MenuItem value="center">Center</MenuItem>
+                        <MenuItem value="right">Right</MenuItem>
+                        <MenuItem value="justify">Justify</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name="fonttype"
+                            onChange={() => handleFontStyleChange("bold")}
+                          />
+                        }
+                        label="Bold"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name="fonttype"
+                            onChange={() => handleFontStyleChange("italic")}
+                          />
+                        }
+                        label="Italic"
+                      />
 
-                  <select
-                    onChange={(e) => handleTextAlignChange(e.target.value)}
-                  >
-                    <option value="left">Left</option>
-                    <option value="center">Center</option>
-                    <option value="right">Right</option>
-                    <option value="justify">Justify</option>
-                  </select>
-
-                  <label>Text Style:</label>
-
-                  <input
-                    type="checkbox"
-                    name="fonttype"
-                    onChange={() => handleFontStyleChange("bold")}
-                  />
-                  <label>Bold</label>
-
-                  <input
-                    type="checkbox"
-                    name="fonttype"
-                    onChange={() => handleFontStyleChange("italic")}
-                  />
-                  <label>Italic</label>
-
-                  <input
-                    type="checkbox"
-                    name="fonttype"
-                    onChange={() => handleTextDecorationChange("underline")}
-                  />
-                  <label>Underline</label>
-
-                  <input
-                    type="checkbox"
-                    name="fonttype"
-                    onChange={() => handleTextDecorationChange("line-through")}
-                  />
-                  <label>Line-through</label>
-
-                  <input
-                    type="checkbox"
-                    name="fonttype"
-                    onChange={() => handleTextDecorationChange("overline")}
-                  />
-                  <label>Overline</label>
-
-                  <input
-                    type="range"
-                    min="1"
-                    max="120"
-                    step="1"
-                    onChange={(e) => handleTextSizeChange(e.target.value)}
-                  />
-                  <label>Font Size</label>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name="fonttype"
+                            onChange={() =>
+                              handleTextDecorationChange("underline")
+                            }
+                          />
+                        }
+                        label="Underline"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name="fonttype"
+                            onChange={() =>
+                              handleTextDecorationChange("line-through")
+                            }
+                          />
+                        }
+                        label="Line-through"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name="fonttype"
+                            onChange={() =>
+                              handleTextDecorationChange("overline")
+                            }
+                          />
+                        }
+                        label="Overline"
+                      />
+                    </FormGroup>
+                    <label>
+                      <Slider
+                        size="small"
+                        defaultValue={70}
+                        min={1}
+                        max={120}
+                        step={1}
+                        aria-label="Font Size"
+                        valueLabelDisplay="auto"
+                        orientation="vertical"
+                        onChange={(e) => handleTextSizeChange(e.target.value)}
+                      />
+                      Font Size
+                    </label>
+                  </Box>
                 </Box>
               )}
               {(selectedShape?.type === "rect" ||
@@ -625,27 +696,51 @@ const CanvasApp = () => {
                 <Box>
                   <h4>Shape control</h4>
                   <Box>
-                    <label>Shape Color:</label>
-                    <input
-                      type="color"
-                      value={selectedShape ? selectedShape.color : "#000000"}
-                      onChange={(e) => handleShapeColorChange(e.target.value)}
-                    />
+                    <label id="shape-color">
+                      <input
+                        id="shape-color"
+                        type="color"
+                        value={selectedShape ? selectedShape.color : "#000000"}
+                        onChange={(e) => handleShapeColorChange(e.target.value)}
+                        style={{ display: "none" }}
+                      />
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        size="small"
+                        endIcon={<FormatColorTextIcon />}
+                      >
+                        Shape color
+                      </Button>
+                    </label>
                   </Box>
                 </Box>
               )}
             </Box>
             <Box style={{ display: "flex", justifyContent: "center" }}>
               <Box>
-                <canvas
-                  ref={canvasRef}
-                  width={800}
-                  height={600}
-                  style={{
-                    border: "1px solid #ec3266",
-                    backgroundColor: canvasBackgroundColor,
-                  }}
-                />
+                <Paper elevation={3}>
+                  <canvas
+                    ref={canvasRef}
+                    width={800}
+                    height={600}
+                    style={{
+                      backgroundColor: canvasBackgroundColor,
+                    }}
+                  />
+                </Paper>
+                <br />
+                <br />
+                <Button
+                  variant="outlined"
+                  component="button"
+                  size="small"
+                  startIcon={<AddIcon />}
+                  onClick={() => alert("Coming soon...")}
+                  sx={{ width: "25vw" }}
+                >
+                  Add Canvas
+                </Button>
               </Box>
             </Box>
           </Box>
