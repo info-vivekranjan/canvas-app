@@ -41,6 +41,7 @@ import Slider from "@mui/material/Slider";
 import Crop32Icon from "@mui/icons-material/Crop32";
 import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 import ChangeHistoryIcon from "@mui/icons-material/ChangeHistory";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 
 const CanvasApp = () => {
   const canvasRef = useRef(null);
@@ -707,6 +708,12 @@ const CanvasApp = () => {
                     <ListItemText primary={"Canvas Background"} />
                   </ListItemButton>
                 </label>
+                <ListItemButton onClick={() => canvas.clear()}>
+                  <ListItemIcon>
+                    <CleaningServicesIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"Clear Canvas"} />
+                </ListItemButton>
               </List>
             </Box>
           </Drawer>
