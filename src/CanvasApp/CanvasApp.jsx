@@ -55,12 +55,14 @@ const CanvasApp = () => {
 
   const [canvasBackgroundColor, setCanvasBackgroundColor] = useState("#ffffff");
   const [textColor, setTextColor] = useState("#949494");
-  const [selectedShape, setSelectedShape] = useState(null);
+  const [selectedShape, setSelectedShape] = useState(null); // for selected component not only shape
   const drawerWidth = 250;
   const [open, setOpen] = React.useState(false);
   const [openTemplate, setOpenTemplate] = React.useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [selectedTemplateOption, setSelectedTemplateOption] = useState("");
+  const [nextComponentStackingOrder, setNextComponentStackingOrder] =
+    useState(1);
   const imageTemplates = {
     template1: burgur,
     template2: pizza,
@@ -89,6 +91,18 @@ const CanvasApp = () => {
     },
   });
 
+  const addComponentToCanvas = (component) => {
+    // Set the stacking order of the component and increment for the next component
+    component.set("stackingOrder", nextComponentStackingOrder);
+    setNextComponentStackingOrder(nextComponentStackingOrder + 1);
+
+    // Add the component to the canvas
+    canvas.add(component);
+
+    // Deselect any active object to prevent rearrangement in stacking order
+    canvas.discardActiveObject();
+  };
+
   //=============================================================================================<<Image>>=======================================================
 
   const handleImageUpload = (event) => {
@@ -101,7 +115,7 @@ const CanvasApp = () => {
         addDeleteControl(fabricImg);
         addCloneControl(fabricImg);
 
-        canvas.add(fabricImg);
+        addComponentToCanvas(fabricImg);
       };
       img.src = event.target.result;
     };
@@ -117,11 +131,28 @@ const CanvasApp = () => {
     if (canvas && templatePath) {
       fabric.Image.fromURL(templatePath, (template) => {
         template.set({ left: 10, top: 10 });
-        canvas.add(template);
+        template.scaleToWidth(500);
+        addComponentToCanvas(template);
         addDeleteControl(template);
         addCloneControl(template);
         setSelectedTemplate(template);
       });
+    }
+  };
+
+  const zoomIn = () => {
+    if (selectedShape) {
+      selectedShape.scaleX *= 1.1; // Increase scale (zoom in)
+      selectedShape.scaleY *= 1.1; // Increase scale (zoom in)
+      canvas.renderAll();
+    }
+  };
+
+  const zoomOut = () => {
+    if (selectedShape) {
+      selectedShape.scaleX /= 1.1; // Decrease scale (zoom out)
+      selectedShape.scaleY /= 1.1; // Decrease scale (zoom out)
+      canvas.renderAll();
     }
   };
 
@@ -147,7 +178,7 @@ const CanvasApp = () => {
       addDeleteControl(text);
       addCloneControl(text);
 
-      canvas.add(text);
+      addComponentToCanvas(text);
     }
   };
 
@@ -238,7 +269,7 @@ const CanvasApp = () => {
 
     // Associate a color property with the rectangle object
     rect.color = selectedShape ? selectedShape.color : "#949494";
-    canvas.add(rect);
+    addComponentToCanvas(rect);
   };
 
   const addCircle = () => {
@@ -252,7 +283,7 @@ const CanvasApp = () => {
     addCloneControl(circle);
     // Associate a color property with the rectangle object
     circle.color = selectedShape ? selectedShape.color : "#949494";
-    canvas.add(circle);
+    addComponentToCanvas(circle);
   };
 
   const addTriangle = () => {
@@ -268,7 +299,7 @@ const CanvasApp = () => {
 
     // Associate a color property with the rectangle object
     triangle.color = selectedShape ? selectedShape.color : "#949494";
-    canvas.add(triangle);
+    addComponentToCanvas(triangle);
   };
 
   const addHexagon = () => {
@@ -322,7 +353,7 @@ const CanvasApp = () => {
 
     // Associate a color property with the rectangle object
     polyg.color = selectedShape ? selectedShape.color : "#949494";
-    canvas.add(polyg);
+    addComponentToCanvas(polyg);
   };
 
   //=============================================================================================<<Stroked Shape>>=======================================================
@@ -342,7 +373,7 @@ const CanvasApp = () => {
 
     // Associate a color property with the rectangle object
     rect.color = selectedShape ? selectedShape.color : "#949494";
-    canvas.add(rect);
+    addComponentToCanvas(rect);
   };
 
   const addCircleStroke = () => {
@@ -358,7 +389,7 @@ const CanvasApp = () => {
     addCloneControl(circle);
     // Associate a color property with the rectangle object
     circle.color = selectedShape ? selectedShape.color : "#949494";
-    canvas.add(circle);
+    addComponentToCanvas(circle);
   };
 
   const addTriangleStroke = () => {
@@ -376,7 +407,7 @@ const CanvasApp = () => {
 
     // Associate a color property with the rectangle object
     triangle.color = selectedShape ? selectedShape.color : "#949494";
-    canvas.add(triangle);
+    addComponentToCanvas(triangle);
   };
 
   const addHexagonStroke = () => {
@@ -431,7 +462,7 @@ const CanvasApp = () => {
 
     // Associate a color property with the rectangle object
     polyg.color = selectedShape ? selectedShape.color : "#949494";
-    canvas.add(polyg);
+    addComponentToCanvas(polyg);
   };
   //=============================================================================================<<Delete and Clone>>=======================================================
 
@@ -500,7 +531,7 @@ const CanvasApp = () => {
           top: target.top + 60,
         });
         addDeleteControl(cloned); // Add a delete control to the cloned object
-        canvas.add(cloned);
+        addComponentToCanvas(cloned);
       });
     }
   }
@@ -545,7 +576,9 @@ const CanvasApp = () => {
   //=============================================================================================<<useEffect>>=======================================================
 
   useEffect(() => {
-    let newCanvas = new fabric.Canvas(canvasRef.current);
+    let newCanvas = new fabric.Canvas(canvasRef.current, {
+      preserveObjectStacking: true, // Prevent objects from changing stacking order
+    });
     setCanvas(newCanvas);
 
     return () => {
@@ -630,6 +663,22 @@ const CanvasApp = () => {
                     <ListItemText primary={"Add Text"} />
                   </ListItemButton>
                 </ListItem>
+                <label htmlFor="contained-button-file">
+                  <Input
+                    id="contained-button-file"
+                    accept="image/*"
+                    name="file"
+                    type="file"
+                    onChange={handleImageUpload}
+                    style={{ display: "none" }}
+                  />
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <InsertPhotoIcon sx={{ color: "white" }} />
+                    </ListItemIcon>
+                    <ListItemText primary={"Add Image"} />
+                  </ListItemButton>
+                </label>
                 <ListItemButton onClick={handleCollapseShape}>
                   <ListItemIcon>
                     <InterestsIcon sx={{ color: "white" }} />
@@ -746,22 +795,6 @@ const CanvasApp = () => {
                     ))}
                   </div>
                 </Collapse>
-                <label htmlFor="contained-button-file">
-                  <Input
-                    id="contained-button-file"
-                    accept="image/*"
-                    name="file"
-                    type="file"
-                    onChange={handleImageUpload}
-                    style={{ display: "none" }}
-                  />
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <InsertPhotoIcon sx={{ color: "white" }} />
-                    </ListItemIcon>
-                    <ListItemText primary={"Add Image"} />
-                  </ListItemButton>
-                </label>
                 <label htmlFor="canvas-background">
                   <input
                     id="canvas-background"
@@ -965,6 +998,21 @@ const CanvasApp = () => {
                     </label>
                   </Box>
                 </Box>
+              )}
+              {selectedShape && (
+                <>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={zoomIn}
+                    style={{ marginRight: "8px" }}
+                  >
+                    Zoom In
+                  </Button>
+                  <Button variant="outlined" size="small" onClick={zoomOut}>
+                    Zoom Out
+                  </Button>
+                </>
               )}
             </Box>
             <Box style={{ display: "flex", justifyContent: "center" }}>
