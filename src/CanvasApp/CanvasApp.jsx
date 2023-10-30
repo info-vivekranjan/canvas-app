@@ -42,6 +42,12 @@ import Crop32Icon from "@mui/icons-material/Crop32";
 import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 import ChangeHistoryIcon from "@mui/icons-material/ChangeHistory";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
+import burgur from "../utils/images/burgur.jpeg";
+import pizza from "../utils/images/pizza.jpg";
+import apples from "../utils/images/apples.jpg";
+import apple from "../utils/images/one-apple.jpeg";
+import rasmalai from "../utils/images/rasmalai.jpg";
 
 const CanvasApp = () => {
   const canvasRef = useRef(null);
@@ -52,9 +58,22 @@ const CanvasApp = () => {
   const [selectedShape, setSelectedShape] = useState(null);
   const drawerWidth = 250;
   const [open, setOpen] = React.useState(false);
-
+  const [openTemplate, setOpenTemplate] = React.useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [selectedTemplateOption, setSelectedTemplateOption] = useState("");
+  const imageTemplates = {
+    template1: burgur,
+    template2: pizza,
+    template3: apples,
+    template4: apple,
+    template5: rasmalai,
+  };
   const handleCollapseShape = () => {
     setOpen(!open);
+  };
+
+  const handleCollapseTemplate = () => {
+    setOpenTemplate(!openTemplate);
   };
 
   //=============================================================================================<<Theme for material>>=======================================================
@@ -88,6 +107,22 @@ const CanvasApp = () => {
     };
     reader.readAsDataURL(file);
     event.target.value = "";
+  };
+
+  const handleTemplateChange = (option) => {
+    setSelectedTemplateOption(option);
+    const templateName = option;
+    const templatePath = imageTemplates[templateName];
+
+    if (canvas && templatePath) {
+      fabric.Image.fromURL(templatePath, (template) => {
+        template.set({ left: 10, top: 10 });
+        canvas.add(template);
+        addDeleteControl(template);
+        addCloneControl(template);
+        setSelectedTemplate(template);
+      });
+    }
   };
 
   //=============================================================================================<<Text>>=======================================================
@@ -671,10 +706,50 @@ const CanvasApp = () => {
                     </ListItemButton>
                   </List>
                 </Collapse>
+                <ListItemButton onClick={handleCollapseTemplate}>
+                  <ListItemIcon>
+                    <PhotoLibraryIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Image Templates" />
+                  {openTemplate ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={openTemplate} timeout="auto" unmountOnExit>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      marginLeft: "25px",
+                    }}
+                  >
+                    {Object.entries(imageTemplates).map(([key, image]) => (
+                      <div
+                        key={key}
+                        onClick={() => handleTemplateChange(key)}
+                        style={{
+                          cursor: "pointer",
+                          margin: "4px",
+                        }}
+                      >
+                        <img
+                          src={image}
+                          alt={key}
+                          style={{
+                            border:
+                              key === selectedTemplateOption
+                                ? "2px solid white"
+                                : "2px solid transparent",
+                            width: "90px",
+                            height: "80px",
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </Collapse>
                 <label htmlFor="contained-button-file">
                   <Input
                     id="contained-button-file"
-                    // multiple
+                    accept="image/*"
                     name="file"
                     type="file"
                     onChange={handleImageUpload}
@@ -894,28 +969,16 @@ const CanvasApp = () => {
             </Box>
             <Box style={{ display: "flex", justifyContent: "center" }}>
               <Box>
-                <Paper elevation={3}>
+                <Paper elevation={4}>
                   <canvas
                     ref={canvasRef}
-                    width={800}
+                    width={850}
                     height={600}
                     style={{
                       backgroundColor: canvasBackgroundColor,
                     }}
                   />
                 </Paper>
-                <br />
-                <br />
-                <Button
-                  variant="outlined"
-                  component="button"
-                  size="small"
-                  startIcon={<AddIcon />}
-                  onClick={() => alert("Coming soon...")}
-                  sx={{ width: "25vw" }}
-                >
-                  Add Canvas
-                </Button>
               </Box>
             </Box>
           </Box>
