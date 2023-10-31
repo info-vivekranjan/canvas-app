@@ -46,11 +46,24 @@ import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import DrawIcon from "@mui/icons-material/Draw";
 import EditOffIcon from "@mui/icons-material/EditOff";
 import EditIcon from "@mui/icons-material/Edit";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+
+// Image Imports
+
 import burgur from "../utils/images/burgur.jpeg";
 import pizza from "../utils/images/pizza.jpg";
 import apples from "../utils/images/apples.jpg";
 import apple from "../utils/images/one-apple.jpeg";
 import rasmalai from "../utils/images/rasmalai.jpg";
+import background1 from "../utils/images/background1.jpg";
+import background2 from "../utils/images/background2.jpg";
+import background3 from "../utils/images/background3.jpg";
+import background4 from "../utils/images/background4.jpg";
+import background5 from "../utils/images/background5.jpg";
+import background6 from "../utils/images/background6.png";
+import background7 from "../utils/images/background7.jpg";
+import background8 from "../utils/images/background8.jpg";
 
 const CanvasApp = () => {
   const canvasRef = useRef(null);
@@ -77,6 +90,14 @@ const CanvasApp = () => {
     template3: apples,
     template4: apple,
     template5: rasmalai,
+    template6: background1,
+    template7: background2,
+    template8: background3,
+    template9: background4,
+    template10: background5,
+    template11: background6,
+    template12: background7,
+    template13: background8,
   };
   const handleCollapseShape = () => {
     setOpen(!open);
@@ -368,6 +389,60 @@ const CanvasApp = () => {
     addComponentToCanvas(polyg);
   };
 
+  const add4Star = () => {
+    // Define the points for the star shape
+    const starPoints = [
+      { x: 0, y: -50 },
+      { x: 15, y: -15 },
+      { x: 50, y: 0 },
+      { x: 15, y: 15 },
+      { x: 0, y: 50 },
+      { x: -15, y: 15 },
+      { x: -50, y: 0 },
+      { x: -15, y: -15 },
+    ];
+
+    // Create a star shape
+    const star = new fabric.Polygon(starPoints, {
+      left: 100, // Set the initial position
+      top: 100,
+      fill: selectedShape ? selectedShape.color : "#949494",
+      selectable: true, // Make it selectable
+    });
+
+    star.color = selectedShape ? selectedShape.color : "#949494";
+    addComponentToCanvas(star);
+  };
+
+  const add5StarPoints = () => {
+    // Define the points for the star shape with 5 sides (pentagon)
+    const star5Points = [
+      { x: 0, y: -70 },
+      { x: 20, y: -20 },
+      { x: 70, y: -20 },
+      { x: 30, y: 20 },
+      { x: 50, y: 70 },
+      { x: 0, y: 45 },
+      { x: -50, y: 70 },
+      { x: -30, y: 20 },
+      { x: -70, y: -20 },
+      { x: -20, y: -20 },
+    ];
+
+    // Create a star shape with 5 sides (pentagon)
+    const star5 = new fabric.Polygon(star5Points, {
+      left: 100,
+      top: 100,
+      fill: selectedShape ? selectedShape.color : "#949494",
+      selectable: true, // Make it selectable
+    });
+
+    star5.color = selectedShape ? selectedShape.color : "#949494";
+
+    // Add the star shape with 5 sides to the canvas
+    addComponentToCanvas(star5);
+  };
+
   //=============================================================================================<<Stroked Shape>>=======================================================
 
   const addRectangleStroke = () => {
@@ -476,6 +551,65 @@ const CanvasApp = () => {
     polyg.color = selectedShape ? selectedShape.color : "#949494";
     addComponentToCanvas(polyg);
   };
+
+  const add4StarStroke = () => {
+    // Define the points for the star shape
+    const starPoints = [
+      { x: 0, y: -50 },
+      { x: 15, y: -15 },
+      { x: 50, y: 0 },
+      { x: 15, y: 15 },
+      { x: 0, y: 50 },
+      { x: -15, y: 15 },
+      { x: -50, y: 0 },
+      { x: -15, y: -15 },
+    ];
+
+    // Create a star shape
+    const star = new fabric.Polygon(starPoints, {
+      left: 100, // Set the initial position
+      top: 100,
+      stroke: selectedShape ? selectedShape.color : "#949494",
+      strokeWidth: 3,
+      fill: "",
+      selectable: true, // Make it selectable
+    });
+
+    star.color = selectedShape ? selectedShape.color : "#949494";
+    addComponentToCanvas(star);
+  };
+
+  const add5StarPointsStroke = () => {
+    // Define the points for the star shape with 5 sides (pentagon)
+    const star5Points = [
+      { x: 0, y: -70 },
+      { x: 20, y: -20 },
+      { x: 70, y: -20 },
+      { x: 30, y: 20 },
+      { x: 50, y: 70 },
+      { x: 0, y: 45 },
+      { x: -50, y: 70 },
+      { x: -30, y: 20 },
+      { x: -70, y: -20 },
+      { x: -20, y: -20 },
+    ];
+
+    // Create a star shape with 5 sides (pentagon)
+    const star5 = new fabric.Polygon(star5Points, {
+      left: 100,
+      top: 100,
+      stroke: selectedShape ? selectedShape.color : "#949494",
+      strokeWidth: 3,
+      fill: "",
+      selectable: true, // Make it selectable
+    });
+
+    star5.color = selectedShape ? selectedShape.color : "#949494";
+
+    // Add the star shape with 5 sides to the canvas
+    addComponentToCanvas(star5);
+  };
+
   //=============================================================================================<<Delete and Clone>>=======================================================
 
   fabric.Object.prototype.cornerColor = "black";
@@ -608,49 +742,13 @@ const CanvasApp = () => {
     newCanvas.on("mouse:move", (event) => {
       event.e.stopPropagation();
     });
-
+    newCanvas.backgroundColor = "#ffffff";
     setCanvas(newCanvas);
 
     return () => {
       newCanvas.dispose();
     };
   }, []);
-
-  // const toggleDrawMode = () => {
-  //   if (canvas) {
-  //     canvas.isDrawingMode = !canvas.isDrawingMode;
-  //     canvas.freeDrawingBrush.color = canvas.isDrawingMode
-  //       ? "black"
-  //       : "transparent";
-  //     setIsDrawing(false);
-  //   }
-  // };
-
-  // const toggleMarkerMode = () => {
-  //   if (canvas) {
-  //     // Switch to marker mode
-  //     canvas.isDrawingMode = !canvas.isDrawingMode;
-  //     canvas.freeDrawingBrush.width = 5;
-  //     canvas.freeDrawingBrush.color = canvas.isDrawingMode
-  //       ? "red"
-  //       : "transparent";
-  //     setIsDrawing(false);
-  //   }
-  // };
-
-  // const toggleHighlighterMode = () => {
-  //   if (canvas) {
-  //     // Toggle highlighter mode
-  //     const highlighterBrushColor = "rgba(255, 255, 0, 0.3)"; // Yellow color with 50% opacity
-
-  //     canvas.isDrawingMode = !canvas.isDrawingMode;
-  //     canvas.freeDrawingBrush.width = 20;
-  //     canvas.freeDrawingBrush.color = canvas.isDrawingMode
-  //       ? highlighterBrushColor
-  //       : "transparent";
-  //     setIsDrawing(false);
-  //   }
-  // };
 
   const togglePencilMode = () => {
     if (canvas) {
@@ -815,6 +913,28 @@ const CanvasApp = () => {
                       </ListItemIcon>
                       <ListItemText primary="Hexagon" />
                     </ListItemButton>
+                    <ListItemButton onClick={add4Star}>
+                      <ListItemIcon>
+                        <svg
+                          fill="#ffffff"
+                          width="30px"
+                          height="30px"
+                          version="1.1"
+                          x="0px"
+                          y="0px"
+                          viewBox="0 0 100 125"
+                        >
+                          <polygon points="50,10 35.8578491,35.8578491 10,50 35.8578491,64.1420898 50,90 64.1421509,64.1420898 90,50   64.1421509,35.8578491 " />
+                        </svg>
+                      </ListItemIcon>
+                      <ListItemText primary="Star 1" />
+                    </ListItemButton>
+                    <ListItemButton onClick={add5StarPoints}>
+                      <ListItemIcon>
+                        <StarIcon sx={{ color: "white" }} />
+                      </ListItemIcon>
+                      <ListItemText primary="Star 2" />
+                    </ListItemButton>
                     <ListItemButton onClick={addRectangleStroke}>
                       <ListItemIcon>
                         <Crop32Icon sx={{ color: "white" }} />
@@ -854,6 +974,31 @@ const CanvasApp = () => {
                         </svg>
                       </ListItemIcon>
                       <ListItemText primary="Hexagon Stroke" />
+                    </ListItemButton>
+                    <ListItemButton onClick={add4StarStroke}>
+                      <ListItemIcon>
+                        <svg
+                          width="25px"
+                          height="25px"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M12 2L14.012 7.23109C14.294 7.96432 14.435 8.33093 14.6542 8.63931C14.8486 8.91262 15.0874 9.15141 15.3607 9.34575C15.6691 9.56503 16.0357 9.70603 16.7689 9.98804L22 12L16.7689 14.012C16.0357 14.294 15.6691 14.435 15.3607 14.6542C15.0874 14.8486 14.8486 15.0874 14.6542 15.3607C14.435 15.6691 14.294 16.0357 14.012 16.7689L12 22L9.98804 16.7689C9.70603 16.0357 9.56503 15.6691 9.34575 15.3607C9.15141 15.0874 8.91262 14.8486 8.63931 14.6542C8.33093 14.435 7.96432 14.294 7.23109 14.012L2 12L7.23108 9.98804C7.96431 9.70603 8.33093 9.56503 8.63931 9.34575C8.91262 9.15141 9.15141 8.91262 9.34575 8.63931C9.56503 8.33093 9.70603 7.96431 9.98804 7.23108L12 2Z"
+                            stroke="#ffffff"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </ListItemIcon>
+                      <ListItemText primary="Star 1 Stroke" />
+                    </ListItemButton>
+                    <ListItemButton onClick={add5StarPointsStroke}>
+                      <ListItemIcon>
+                        <StarBorderIcon sx={{ color: "white" }} />
+                      </ListItemIcon>
+                      <ListItemText primary="Star 2 Stroke" />
                     </ListItemButton>
                   </List>
                 </Collapse>
@@ -1068,15 +1213,14 @@ const CanvasApp = () => {
           </Drawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
             <Toolbar />
-            <Box style={{ minHeight: "10vh" }}>
+            <Box style={{ minHeight: "15vh" }}>
               {selectedShape?.type === "i-text" && (
                 <Box>
-                  <h4>Text control</h4>
                   <Box
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      height: "4vh",
+                      height: "5vh",
                     }}
                   >
                     <label id="text-color">
@@ -1218,7 +1362,6 @@ const CanvasApp = () => {
                 selectedShape?.type === "triangle" ||
                 selectedShape?.type === "polygon") && (
                 <Box>
-                  <h4>Shape control</h4>
                   <Box>
                     <label id="shape-color">
                       <input
