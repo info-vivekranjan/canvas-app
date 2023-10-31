@@ -1213,7 +1213,7 @@ const CanvasApp = () => {
           </Drawer>
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
             <Toolbar />
-            <Box style={{ minHeight: "15vh" }}>
+            <Box style={{ minHeight: "12vh" }}>
               {selectedShape?.type === "i-text" && (
                 <Box>
                   <Box
@@ -1414,6 +1414,22 @@ const CanvasApp = () => {
               </Box>
             </Box>
           </Box>
+        </Box>
+        <Box
+          style={{
+            position: "fixed",
+            left: 0,
+            bottom: 0,
+            width: "100%",
+            backgroundColor: "#f5f5f5",
+            color: "#848482",
+            boxShadow: "0 -5px 4px rgba(0, 0, 0, 0.1)",
+            textAlign: "center",
+            padding: "12px 0",
+            backdropFilter: "blur(2px)",
+          }}
+        >
+          Made by Vivek Ranjan © 2023
         </Box>
       </ThemeProvider>
     </>
