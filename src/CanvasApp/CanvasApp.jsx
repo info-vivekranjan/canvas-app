@@ -43,6 +43,9 @@ import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 import ChangeHistoryIcon from "@mui/icons-material/ChangeHistory";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
+import DrawIcon from "@mui/icons-material/Draw";
+import EditOffIcon from "@mui/icons-material/EditOff";
+import EditIcon from "@mui/icons-material/Edit";
 import burgur from "../utils/images/burgur.jpeg";
 import pizza from "../utils/images/pizza.jpg";
 import apples from "../utils/images/apples.jpg";
@@ -59,10 +62,15 @@ const CanvasApp = () => {
   const drawerWidth = 250;
   const [open, setOpen] = React.useState(false);
   const [openTemplate, setOpenTemplate] = React.useState(false);
+  const [openDraw, setOpenDraw] = React.useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [selectedTemplateOption, setSelectedTemplateOption] = useState("");
   const [nextComponentStackingOrder, setNextComponentStackingOrder] =
     useState(1);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [pencilMode, setPencilMode] = useState(false);
+  const [markerMode, setMarkerMode] = useState(false);
+  const [highlighterMode, setHighlighterMode] = useState(false);
   const imageTemplates = {
     template1: burgur,
     template2: pizza,
@@ -76,6 +84,10 @@ const CanvasApp = () => {
 
   const handleCollapseTemplate = () => {
     setOpenTemplate(!openTemplate);
+  };
+
+  const handleCollapseDraw = () => {
+    setOpenDraw(!openDraw);
   };
 
   //=============================================================================================<<Theme for material>>=======================================================
@@ -112,8 +124,8 @@ const CanvasApp = () => {
       const img = new Image();
       img.onload = () => {
         const fabricImg = new fabric.Image(img);
-        addDeleteControl(fabricImg);
-        addCloneControl(fabricImg);
+        // addDeleteControl(fabricImg);
+        // addCloneControl(fabricImg);
 
         addComponentToCanvas(fabricImg);
       };
@@ -133,8 +145,8 @@ const CanvasApp = () => {
         template.set({ left: 10, top: 10 });
         template.scaleToWidth(500);
         addComponentToCanvas(template);
-        addDeleteControl(template);
-        addCloneControl(template);
+        // addDeleteControl(template);
+        // addCloneControl(template);
         setSelectedTemplate(template);
       });
     }
@@ -175,8 +187,8 @@ const CanvasApp = () => {
         textDecoration: "",
         lineHeight: 1,
       });
-      addDeleteControl(text);
-      addCloneControl(text);
+      // addDeleteControl(text);
+      // addCloneControl(text);
 
       addComponentToCanvas(text);
     }
@@ -264,8 +276,8 @@ const CanvasApp = () => {
       height: 100,
       fill: selectedShape ? selectedShape.color : "#949494",
     });
-    addDeleteControl(rect);
-    addCloneControl(rect);
+    // addDeleteControl(rect);
+    // addCloneControl(rect);
 
     // Associate a color property with the rectangle object
     rect.color = selectedShape ? selectedShape.color : "#949494";
@@ -279,8 +291,8 @@ const CanvasApp = () => {
       radius: 50,
       fill: selectedShape ? selectedShape.color : "#949494",
     });
-    addDeleteControl(circle);
-    addCloneControl(circle);
+    // addDeleteControl(circle);
+    // addCloneControl(circle);
     // Associate a color property with the rectangle object
     circle.color = selectedShape ? selectedShape.color : "#949494";
     addComponentToCanvas(circle);
@@ -294,8 +306,8 @@ const CanvasApp = () => {
       height: 100,
       fill: selectedShape ? selectedShape.color : "#949494",
     });
-    addDeleteControl(triangle);
-    addCloneControl(triangle);
+    // addDeleteControl(triangle);
+    // addCloneControl(triangle);
 
     // Associate a color property with the rectangle object
     triangle.color = selectedShape ? selectedShape.color : "#949494";
@@ -348,8 +360,8 @@ const CanvasApp = () => {
       fill: "",
       fill: selectedShape ? selectedShape.color : "#949494",
     });
-    addDeleteControl(polyg);
-    addCloneControl(polyg);
+    // addDeleteControl(polyg);
+    // addCloneControl(polyg);
 
     // Associate a color property with the rectangle object
     polyg.color = selectedShape ? selectedShape.color : "#949494";
@@ -368,8 +380,8 @@ const CanvasApp = () => {
       strokeWidth: 3,
       fill: "",
     });
-    addDeleteControl(rect);
-    addCloneControl(rect);
+    // addDeleteControl(rect);
+    // addCloneControl(rect);
 
     // Associate a color property with the rectangle object
     rect.color = selectedShape ? selectedShape.color : "#949494";
@@ -385,8 +397,8 @@ const CanvasApp = () => {
       strokeWidth: 3,
       fill: "",
     });
-    addDeleteControl(circle);
-    addCloneControl(circle);
+    // addDeleteControl(circle);
+    // addCloneControl(circle);
     // Associate a color property with the rectangle object
     circle.color = selectedShape ? selectedShape.color : "#949494";
     addComponentToCanvas(circle);
@@ -402,8 +414,8 @@ const CanvasApp = () => {
       strokeWidth: 3,
       fill: "",
     });
-    addDeleteControl(triangle);
-    addCloneControl(triangle);
+    // addDeleteControl(triangle);
+    // addCloneControl(triangle);
 
     // Associate a color property with the rectangle object
     triangle.color = selectedShape ? selectedShape.color : "#949494";
@@ -457,8 +469,8 @@ const CanvasApp = () => {
       strokeWidth: 3,
       fill: "",
     });
-    addDeleteControl(polyg);
-    addCloneControl(polyg);
+    // addDeleteControl(polyg);
+    // addCloneControl(polyg);
 
     // Associate a color property with the rectangle object
     polyg.color = selectedShape ? selectedShape.color : "#949494";
@@ -574,25 +586,115 @@ const CanvasApp = () => {
   };
 
   //=============================================================================================<<useEffect>>=======================================================
-
   useEffect(() => {
     let newCanvas = new fabric.Canvas(canvasRef.current, {
       preserveObjectStacking: true, // Prevent objects from changing stacking order
     });
+
+    // Drawing feature
+    newCanvas.freeDrawingBrush.color = "black";
+    newCanvas.freeDrawingBrush.width = 2;
+
+    newCanvas.on("mouse:down", (event) => {
+      if (newCanvas.isDrawingMode) {
+        setIsDrawing(true);
+      }
+    });
+
+    newCanvas.on("mouse:up", () => {
+      setIsDrawing(false);
+    });
+
+    newCanvas.on("mouse:move", (event) => {
+      event.e.stopPropagation();
+    });
+
     setCanvas(newCanvas);
 
     return () => {
       newCanvas.dispose();
     };
   }, []);
+
+  // const toggleDrawMode = () => {
+  //   if (canvas) {
+  //     canvas.isDrawingMode = !canvas.isDrawingMode;
+  //     canvas.freeDrawingBrush.color = canvas.isDrawingMode
+  //       ? "black"
+  //       : "transparent";
+  //     setIsDrawing(false);
+  //   }
+  // };
+
+  // const toggleMarkerMode = () => {
+  //   if (canvas) {
+  //     // Switch to marker mode
+  //     canvas.isDrawingMode = !canvas.isDrawingMode;
+  //     canvas.freeDrawingBrush.width = 5;
+  //     canvas.freeDrawingBrush.color = canvas.isDrawingMode
+  //       ? "red"
+  //       : "transparent";
+  //     setIsDrawing(false);
+  //   }
+  // };
+
+  // const toggleHighlighterMode = () => {
+  //   if (canvas) {
+  //     // Toggle highlighter mode
+  //     const highlighterBrushColor = "rgba(255, 255, 0, 0.3)"; // Yellow color with 50% opacity
+
+  //     canvas.isDrawingMode = !canvas.isDrawingMode;
+  //     canvas.freeDrawingBrush.width = 20;
+  //     canvas.freeDrawingBrush.color = canvas.isDrawingMode
+  //       ? highlighterBrushColor
+  //       : "transparent";
+  //     setIsDrawing(false);
+  //   }
+  // };
+
+  const togglePencilMode = () => {
+    if (canvas) {
+      canvas.isDrawingMode = !pencilMode;
+      canvas.freeDrawingBrush.color = pencilMode ? "transparent" : "black";
+      setPencilMode(!pencilMode);
+      setIsDrawing(false);
+    }
+  };
+
+  const toggleMarkerMode = () => {
+    if (canvas) {
+      canvas.isDrawingMode = !markerMode;
+      canvas.freeDrawingBrush.width = 5;
+      canvas.freeDrawingBrush.color = markerMode ? "transparent" : "red";
+      setMarkerMode(!markerMode);
+      setIsDrawing(false);
+    }
+  };
+
+  const toggleHighlighterMode = () => {
+    if (canvas) {
+      const highlighterBrushColor = "rgba(255, 255, 0, 0.3)";
+      canvas.isDrawingMode = !highlighterMode;
+      canvas.freeDrawingBrush.width = 20;
+      canvas.freeDrawingBrush.color = highlighterMode
+        ? "transparent"
+        : highlighterBrushColor;
+      setHighlighterMode(!highlighterMode);
+      setIsDrawing(false);
+    }
+  };
   useEffect(() => {
     if (canvas) {
       canvas.on("selection:created", (e) => {
         setSelectedShape(e.selected[0]); // Set the selected shape when it's created
+        addDeleteControl(e.selected[0]);
+        addCloneControl(e.selected[0]);
       });
 
       canvas.on("selection:updated", (e) => {
         setSelectedShape(e.selected[0]); // Update the selected shape when it's updated
+        addDeleteControl(e.selected[0]);
+        addCloneControl(e.selected[0]);
       });
 
       canvas.on("selection:cleared", () => {
@@ -794,6 +896,145 @@ const CanvasApp = () => {
                       </div>
                     ))}
                   </div>
+                </Collapse>
+                <ListItemButton onClick={handleCollapseDraw}>
+                  <ListItemIcon>
+                    <DrawIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Draw" />
+                  {openDraw ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={openDraw} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <ListItemButton onClick={togglePencilMode}>
+                      <ListItemIcon>
+                        {pencilMode ? (
+                          <EditOffIcon sx={{ color: "white" }} />
+                        ) : (
+                          <EditIcon sx={{ color: "white" }} />
+                        )}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={`${pencilMode ? "Erase Pencil" : "Pencil"}`}
+                      />
+                    </ListItemButton>
+                    <ListItemButton onClick={toggleMarkerMode}>
+                      <ListItemIcon>
+                        {markerMode ? (
+                          <svg
+                            version="1.1"
+                            id="Uploaded to svgrepo.com"
+                            fill="#ffffff"
+                            width="25px"
+                            height="25px"
+                            viewBox="0 0 32 32"
+                          >
+                            <path
+                              class="sharpcorners_een"
+                              d="M30,14l-8,8L11,11l8-8L30,14z M10.293,11.707L2,20l8,8h6l5.293-5.293L10.293,11.707z"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            fill="#ffffff"
+                            height="25px"
+                            width="25px"
+                            version="1.1"
+                            id="Layer_1"
+                            viewBox="0 0 512 512"
+                          >
+                            <g>
+                              <g>
+                                <path
+                                  d="M497.453,131.515l-93.576-93.576c-19.393-19.394-50.786-19.397-70.182,0L99.758,271.88
+			c-2.265,2.265-3.915,5.3-4.546,8.562l-22.39,111.949L4.846,460.369C0.114,465.1-1.3,472.215,1.259,478.396
+			c2.561,6.18,8.592,10.211,15.283,10.211h93.576c4.388,0,8.595-1.744,11.696-4.846l21.19-21.19l112.057-22.411
+			c3.217-0.643,6.218-2.288,8.453-4.525L450.66,248.49c0.002-0.002,0.003-0.003,0.005-0.006c0.002-0.002,0.003-0.003,0.006-0.005
+			l46.782-46.782C516.847,182.302,516.851,150.911,497.453,131.515z M140.286,429.376l-34.267-34.267l15.596-77.979l96.652,96.651
+			L140.286,429.376z M321.999,330.365l-46.787-46.788l93.577-93.576l46.787,46.787L321.999,330.365z"
+                                />
+                              </g>
+                            </g>
+                          </svg>
+                        )}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={`${markerMode ? "Erase Marker" : "Marker"}`}
+                      />
+                    </ListItemButton>
+                    <ListItemButton onClick={toggleHighlighterMode}>
+                      <ListItemIcon>
+                        {highlighterMode ? (
+                          <svg
+                            fill="#ffffff"
+                            height="25px"
+                            width="25px"
+                            version="1.1"
+                            id="Layer_1"
+                            viewBox="0 0 512 512"
+                          >
+                            <g>
+                              <g>
+                                <path
+                                  d="M267.537,412.71l-89.353-100.514c-1.604-1.801-4.378-1.92-6.127-0.256l-64.99,61.747
+                             c-20.258,22.238-15.394,56.175,11.827,82.517c15.087,14.601,35.883,24.926,57.293,24.926c16.051,0,32.461-5.811,47.036-19.977
+                             l44.083-42.539C268.954,417.028,269.056,414.416,267.537,412.71z"
+                                />
+                              </g>
+                            </g>
+                            <g>
+                              <g>
+                                <path
+                                  d="M506.837,1.002c-3.14-1.357-6.775-0.7-9.242,1.656L256.418,231.786c-1.673,1.587-1.775,4.207-0.247,5.931l88.747,99.84
+                             c1.613,1.809,4.403,1.92,6.153,0.239L509.389,185.04c1.672-1.604,2.611-3.823,2.611-6.144V8.844
+                             C512,5.431,509.969,2.342,506.837,1.002z"
+                                />
+                              </g>
+                            </g>
+                            <g>
+                              <g>
+                                <path
+                                  d="M332.86,349.682l-88.883-99.994c-1.604-1.801-4.378-1.92-6.127-0.256l-47.232,44.868
+                             c-1.664,1.587-1.775,4.207-0.247,5.922l89.216,100.369c1.613,1.809,4.403,1.92,6.153,0.239l46.891-45.244
+                             C334.276,354,334.379,351.389,332.86,349.682z"
+                                />
+                              </g>
+                            </g>
+                            <g>
+                              <g>
+                                <path
+                                  d="M93.867,494.63H8.533c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h85.333c4.719,0,8.533-3.823,8.533-8.533
+                             S98.586,494.63,93.867,494.63z"
+                                />
+                              </g>
+                            </g>
+                            <g>
+                              <g>
+                                <path
+                                  d="M503.467,494.63H264.533c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h238.933
+                             c4.719,0,8.533-3.823,8.533-8.533S508.186,494.63,503.467,494.63z"
+                                />
+                              </g>
+                            </g>
+                          </svg>
+                        ) : (
+                          <svg
+                            fill="#ffffff"
+                            width="25px"
+                            height="25px"
+                            viewBox="0 -16 544 544"
+                          >
+                            <path d="M0 479.98L99.92 512l35.45-35.45-67.04-67.04L0 479.98zm124.61-240.01a36.592 36.592 0 0 0-10.79 38.1l13.05 42.83-50.93 50.94 96.23 96.23 50.86-50.86 42.74 13.08c13.73 4.2 28.65-.01 38.15-10.78l35.55-41.64-173.34-173.34-41.52 35.44zm403.31-160.7l-63.2-63.2c-20.49-20.49-53.38-21.52-75.12-2.35L190.55 183.68l169.77 169.78L530.27 154.4c19.18-21.74 18.15-54.63-2.35-75.13z" />
+                          </svg>
+                        )}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={`${
+                          highlighterMode ? "Erase Highlight" : "Highlighter"
+                        }`}
+                      />
+                    </ListItemButton>
+                  </List>
                 </Collapse>
                 <label htmlFor="canvas-background">
                   <input
