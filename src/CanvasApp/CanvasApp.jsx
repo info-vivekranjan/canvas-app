@@ -440,7 +440,7 @@ const CanvasApp = () => {
       top: 100,
       width: 100,
       height: 100,
-      fill: selectedShape ? selectedShape.color : "#949494",
+      fill: selectedShape ? selectedShape.color || "#949494" : "#949494",
     });
     // addDeleteControl(rect);
     // addCloneControl(rect);
@@ -455,7 +455,7 @@ const CanvasApp = () => {
       left: 100,
       top: 100,
       radius: 50,
-      fill: selectedShape ? selectedShape.color : "#949494",
+      fill: selectedShape ? selectedShape.color || "#949494" : "#949494",
     });
     // addDeleteControl(circle);
     // addCloneControl(circle);
@@ -470,7 +470,7 @@ const CanvasApp = () => {
       top: 100,
       width: 100,
       height: 100,
-      fill: selectedShape ? selectedShape.color : "#949494",
+      fill: selectedShape ? selectedShape.color || "#949494" : "#949494",
     });
     // addDeleteControl(triangle);
     // addCloneControl(triangle);
@@ -524,7 +524,7 @@ const CanvasApp = () => {
       top: 180,
       left: 200,
       fill: "",
-      fill: selectedShape ? selectedShape.color : "#949494",
+      fill: selectedShape ? selectedShape.color || "#949494" : "#949494",
     });
     // addDeleteControl(polyg);
     // addCloneControl(polyg);
@@ -551,7 +551,7 @@ const CanvasApp = () => {
     const star = new fabric.Polygon(starPoints, {
       left: 100, // Set the initial position
       top: 100,
-      fill: selectedShape ? selectedShape.color : "#949494",
+      fill: selectedShape ? selectedShape.color || "#949494" : "#949494",
       selectable: true, // Make it selectable
     });
 
@@ -578,7 +578,7 @@ const CanvasApp = () => {
     const star5 = new fabric.Polygon(star5Points, {
       left: 100,
       top: 100,
-      fill: selectedShape ? selectedShape.color : "#949494",
+      fill: selectedShape ? selectedShape.color || "#949494" : "#949494",
       selectable: true, // Make it selectable
     });
 
@@ -596,7 +596,7 @@ const CanvasApp = () => {
       top: 100,
       width: 100,
       height: 100,
-      stroke: selectedShape ? selectedShape.color : "#949494",
+      stroke: selectedShape ? selectedShape.color || "#949494" : "#949494",
       strokeWidth: 3,
       fill: "",
     });
@@ -613,7 +613,7 @@ const CanvasApp = () => {
       left: 100,
       top: 100,
       radius: 50,
-      stroke: selectedShape ? selectedShape.color : "#949494",
+      stroke: selectedShape ? selectedShape.color || "#949494" : "#949494",
       strokeWidth: 3,
       fill: "",
     });
@@ -630,7 +630,7 @@ const CanvasApp = () => {
       top: 100,
       width: 100,
       height: 100,
-      stroke: selectedShape ? selectedShape.color : "#949494",
+      stroke: selectedShape ? selectedShape.color || "#949494" : "#949494",
       strokeWidth: 3,
       fill: "",
     });
@@ -685,7 +685,7 @@ const CanvasApp = () => {
     var polyg = new fabric.Polygon(shape[1], {
       top: 180,
       left: 200,
-      stroke: selectedShape ? selectedShape.color : "#949494",
+      stroke: selectedShape ? selectedShape.color || "#949494" : "#949494",
       strokeWidth: 3,
       fill: "",
     });
@@ -714,7 +714,7 @@ const CanvasApp = () => {
     const star = new fabric.Polygon(starPoints, {
       left: 100, // Set the initial position
       top: 100,
-      stroke: selectedShape ? selectedShape.color : "#949494",
+      stroke: selectedShape ? selectedShape.color || "#949494" : "#949494",
       strokeWidth: 3,
       fill: "",
       selectable: true, // Make it selectable
@@ -743,7 +743,7 @@ const CanvasApp = () => {
     const star5 = new fabric.Polygon(star5Points, {
       left: 100,
       top: 100,
-      stroke: selectedShape ? selectedShape.color : "#949494",
+      stroke: selectedShape ? selectedShape.color || "#949494" : "#949494",
       strokeWidth: 3,
       fill: "",
       selectable: true, // Make it selectable
@@ -1601,6 +1601,7 @@ const CanvasApp = () => {
           </Box>
         </Box>
         <Box
+          component="div"
           style={{
             position: "fixed",
             left: 0,
@@ -1611,7 +1612,8 @@ const CanvasApp = () => {
             boxShadow: "0 -5px 4px rgba(0, 0, 0, 0.1)",
             textAlign: "center",
             padding: "12px 0",
-            fontWeight: "bold",
+            fontWeight: "600",
+            fontSize: "14px",
           }}
         >
           Made by Vivek Ranjan © 2023
