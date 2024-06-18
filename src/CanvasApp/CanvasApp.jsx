@@ -9,7 +9,6 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -25,7 +24,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import WarningIcon from "@mui/icons-material/Warning";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import DownloadIcon from "@mui/icons-material/Download";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import Checkbox from "@mui/material/Checkbox";
@@ -36,7 +35,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Paper from "@mui/material/Paper";
-import AddIcon from "@mui/icons-material/Add";
 import Slider from "@mui/material/Slider";
 import Crop32Icon from "@mui/icons-material/Crop32";
 import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
@@ -67,67 +65,12 @@ import background8 from "../utils/images/background8.jpg";
 
 // Brands
 
-import brand1 from "../utils/brands/McDonalds-Logo.webp";
-import brand2 from "../utils/brands/Burger-King.webp";
-import brand3 from "../utils/brands/Coca-Cola-Logo.webp";
-import brand4 from "../utils/brands/Dell-Logo.webp";
-import brand5 from "../utils/brands/Accenture-Logo.webp";
-import brand6 from "../utils/brands/Android-Logo.webp";
-import brand7 from "../utils/brands/BMW-Logo.jpg";
-import brand8 from "../utils/brands/Canon-Logo.webp";
-import brand9 from "../utils/brands/Chanel-Logo.webp";
-import brand10 from "../utils/brands/Ferrari-Logo.webp";
-import brand11 from "../utils/brands/Gucci.webp";
-import brand12 from "../utils/brands/HM-logo.webp";
-import brand13 from "../utils/brands/Honda-Logo.webp";
-import brand14 from "../utils/brands/Hyundai-Logo.webp";
-import brand15 from "../utils/brands/IBM-Logo.webp";
-import brand16 from "../utils/brands/Intel-Logo.png";
-import brand17 from "../utils/brands/LG-Logo.webp";
-import brand18 from "../utils/brands/Lamborghini-Logo.webp";
-import brand19 from "../utils/brands/Lenovo-Logo.webp";
-import brand20 from "../utils/brands/Levis-Logo.webp";
-import brand21 from "../utils/brands/Mercedes-Benz-Logo.webp";
-import brand22 from "../utils/brands/Microsoft-Logo.png";
-import brand23 from "../utils/brands/Nescafe-Logo.webp";
-import brand24 from "../utils/brands/Nike-Logo.webp";
-import brand25 from "../utils/brands/Nestle-Logo.webp";
-import brand26 from "../utils/brands/Paypal-Logo.png";
-import brand27 from "../utils/brands/Pepsi-Logo.png";
-import brand28 from "../utils/brands/Pizza-Hut.webp";
-import brand29 from "../utils/brands/Puma-Logo.webp";
-import brand30 from "../utils/brands/Rolex-Logo.webp";
-import brand31 from "../utils/brands/SamsungLogo.webp";
-import brand32 from "../utils/brands/Shell-Logo.webp";
-import brand33 from "../utils/brands/Smirnoff-Logo.webp";
-import brand34 from "../utils/brands/Sony-Logo.webp";
-import brand35 from "../utils/brands/Spotify-Logo.png";
-import brand36 from "../utils/brands/Subway-Logo.webp";
-import brand37 from "../utils/brands/TCS_Logo.jpg";
-import brand38 from "../utils/brands/Toyota-Logo.webp";
-import brand39 from "../utils/brands/Walt-Disney-Logo.webp";
-import brand40 from "../utils/brands/adidas-logo.webp";
-import brand41 from "../utils/brands/adobe-logo.webp";
-import brand42 from "../utils/brands/amazon-logo.png";
-import brand43 from "../utils/brands/apple-logo.png";
-import brand44 from "../utils/brands/facebook-logo.webp";
-import brand45 from "../utils/brands/general-electric-logo.webp";
-import brand46 from "../utils/brands/google-logo.webp";
-import brand47 from "../utils/brands/hp-logo.webp";
-import brand48 from "../utils/brands/instagram-logo.webp";
-import brand49 from "../utils/brands/netflix-logo.png";
-import brand50 from "../utils/brands/porsche-logo.webp";
-import brand51 from "../utils/brands/red-bull-logo.webp";
-import brand52 from "../utils/brands/starbucks-logo.png";
-import brand53 from "../utils/brands/tcs-logo.jpg";
-import brand54 from "../utils/brands/uber-app.webp";
-import brand55 from "../utils/brands/visa-logo.png";
-import brand56 from "../utils/brands/volkswagen-logo.png";
-import brand57 from "../utils/brands/youtube-logo.png";
-import brand58 from "../utils/brands/whatsapp.png";
-import brand59 from "../utils/brands/Suzuki_logo.png";
-import brand60 from "../utils/brands/Amul_logo.png";
-
+import brand1 from "../utils/brands/Burger-King.webp";
+import brand2 from "../utils/brands/Android-Logo.webp";
+import brand3 from "../utils/brands/apple-logo.png";
+import brand4 from "../utils/brands/Subway-Logo.webp";
+import brand5 from "../utils/brands/youtube-logo.png";
+import brand6 from "../utils/brands/whatsapp.png";
 const CanvasApp = () => {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
@@ -170,61 +113,7 @@ const CanvasApp = () => {
     brand3,
     brand4,
     brand5,
-    brand6,
-    brand7,
-    brand8,
-    brand9,
-    brand10,
-    brand11,
-    brand12,
-    brand13,
-    brand14,
-    brand15,
-    brand16,
-    brand17,
-    brand18,
-    brand19,
-    brand20,
-    brand21,
-    brand22,
-    brand23,
-    brand24,
-    brand25,
-    brand26,
-    brand27,
-    brand28,
-    brand29,
-    brand30,
-    brand31,
-    brand32,
-    brand33,
-    brand34,
-    brand35,
-    brand36,
-    brand37,
-    brand38,
-    brand39,
-    brand40,
-    brand41,
-    brand42,
-    brand43,
-    brand44,
-    brand45,
-    brand46,
-    brand47,
-    brand48,
-    brand49,
-    brand50,
-    brand51,
-    brand52,
-    brand53,
-    brand54,
-    brand55,
-    brand56,
-    brand57,
-    brand58,
-    brand59,
-    brand60,
+    brand6
   };
   const handleCollapseShape = () => {
     setOpen(!open);
